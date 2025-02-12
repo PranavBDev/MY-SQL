@@ -120,4 +120,94 @@ FROM Worker;
 END 
 AS People_stage_wise
 FROM worker;
+-- Create the category table
+CREATE TABLE category (
+    c_id INT PRIMARY KEY,
+    c_name VARCHAR(25) NOT NULL UNIQUE,
+    c_descrp VARCHAR(250) NOT NULL
+);
 
+-- Insert data into category
+INSERT INTO category (c_id, c_name, c_descrp) 
+VALUES (102, 'furnitures', 'It stores all sets of wooden items');
+
+-- Select all from category
+SELECT * FROM category;
+
+-- Describe category table
+DESC category;
+
+-- Use the database (Ensure the database exists before using it)
+USE org123;
+
+-- Create the Products table with a foreign key reference to category
+CREATE TABLE Products (
+    P_ID INT PRIMARY KEY,
+    p_Name VARCHAR(250) NOT NULL,
+    c_id INT,
+    CONSTRAINT fk_category FOREIGN KEY (c_id) 
+    REFERENCES category(c_id) ON DELETE SET NULL
+);
+
+-- Show tables from the database
+SHOW TABLES FROM org123;
+
+-- Describe Products table
+DESC Products;
+
+-- Drop the Products table (if needed)
+DROP TABLE IF EXISTS Products;
+
+-- Insert into Products (NULL is allowed in foreign key if necessary)
+INSERT INTO Products (P_ID, p_Name, c_id) 
+VALUES (904, 'Wooden table', NULL);
+
+-- Select all from Products
+SELECT * FROM Products;
+
+-- Select all from category
+SELECT * FROM category;
+
+-- Delete a specific category entry
+DELETE FROM category WHERE c_id = 101;
+
+-- Drop the category table (if needed)
+DROP TABLE IF EXISTS category;
+create database saturday;
+use saturday;
+
+create table category(
+c_id int primary key,
+c_name varchar(25) not null unique,
+c_decrp varchar(250) not null
+);
+
+insert into category values (101, 'electronics', 'it stores all set of electronics items');
+select * from category;
+desc category;
+
+CREATE TABLE Products (
+    P_ID int primary key,
+    p_Name varchar(250) NOT NULL,
+    c_id int ,
+    CONSTRAINT c_id FOREIGN KEY (c_id)
+    REFERENCES category(c_id) on delete cascade
+);
+
+insert into products values (904, 'INTEL I5 Processor', 101);
+select * from products;
+delete from category where c_id=101;
+select * from category;
+create table vitBhopal (id int primary key, name varchar(20) not null,
+department varchar(25) not null);
+insert into vitbhopal values (104,'Karthik','cs'),(103,'Arun','cs');
+
+create table vit (id int primary key, name varchar(20) not null,
+college varchar(25) not null);
+insert into vit values (104,'Karthik','chennai'),(103,'Arun','bhopal');
+select * from vit;
+
+select * from vitbhopal;
+
+select name as WinnerOfTheYear from vitbhopal
+where id = (select id from vit where college='bhopal');
