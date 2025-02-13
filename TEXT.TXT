@@ -1,0 +1,51 @@
+Q1]Write an SQL query to print all Worker details from the Worker table order by FIRST_NAME Ascending. GIVE PROPER CODE IN SQL QUERY
+SELECT * 
+FROM Worker 
+ORDER BY FIRST_NAME ASC;
+Q2]Write an SQL query to print all Worker details from the Worker table order by FIRST_NAME Ascending and DEPARTMENT Descending.
+SELECT * 
+FROM Worker 
+ORDER BY FIRST_NAME ASC, DEPARTMENT DESC;
+Q3]Write an SQL query to print details of workers excluding first names, “Vipul” and “Satish” from Worker table.
+SELECT * 
+FROM Worker 
+WHERE FIRST_NAME NOT IN ('Vipul', 'Satish');
+Q4]Write an SQL query to print details of the Workers whose FIRST_NAME ends with ‘h’ and contains six alphabets.
+SELECT * 
+FROM Worker 
+WHERE FIRST_NAME LIKE '_____h';
+Q5]Write an SQL query to fetch the count of employees working in the department ‘Admin’.
+SELECT COUNT(*) AS Employee_Count
+FROM Worker
+WHERE DEPARTMENT = 'Admin';
+Q6]Write an SQL query to fetch worker names with salaries >= 50000 and <= 100000.
+SELECT FIRST_NAME, LAST_NAME, SALARY
+FROM Worker
+WHERE SALARY BETWEEN 50000 AND 100000;
+Q7]Write an SQL query to fetch the no. of workers for each department in the descending order
+SELECT DEPARTMENT, COUNT(*) AS Worker_Count
+FROM Worker
+GROUP BY DEPARTMENT
+ORDER BY Worker_Count DESC;
+Q8]Write an SQL query to determine the 5th highest salary without using TOP or limit method.
+SELECT SALARY 
+FROM Worker W1
+WHERE 4 = (
+    SELECT COUNT(DISTINCT W2.SALARY) 
+    FROM Worker W2 
+    WHERE W2.SALARY > W1.SALARY
+);
+Q9]Write an SQL query to fetch the list of employees with the same salary.
+SELECT W1.FIRST_NAME, W1.LAST_NAME, W1.SALARY
+FROM Worker W1
+WHERE W1.SALARY IN (
+    SELECT W2.SALARY 
+    FROM Worker W2
+    GROUP BY W2.SALARY
+    HAVING COUNT(*) > 1
+);
+Q10]Write an SQL query to fetch the departments that have less than three people in it.
+SELECT DEPARTMENT
+FROM Worker
+GROUP BY DEPARTMENT
+HAVING COUNT(*) < 3;
