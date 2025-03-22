@@ -1,0 +1,148 @@
+Q1]Query:db.sales.find({ item: "Mochas" })
+Example Output:[
+    {
+        "_id" : 4,
+        "item" : "Mochas",
+        "price" : 25,
+        "size": "Tall",
+        "quantity" : 11,
+        "date" : ISODate("2022-02-17T08:00:00Z")
+    }
+]
+
+
+Q2]Query:db.sales.find({ price: { $lt: 15 } })
+Example Output:[
+    { "_id" : 1, "item" : "Americanos", "price" : 5, "size": "Short", "quantity" : 22, "date" : ISODate("2022-01-15T08:00:00Z") },
+    { "_id" : 2, "item" : "Cappuccino", "price" : 6, "size": "Short", "quantity" : 12, "date" : ISODate("2022-01-16T09:00:00Z") },
+    { "_id" : 6, "item" : "Cappuccino", "price" : 7, "size": "Tall", "quantity" : 20, "date" : ISODate("2022-02-20T10:07:00Z") },
+    { "_id" : 10, "item" : "Americanos", "price" : 8, "size": "Tall", "quantity" : 15, "date" : ISODate("2022-02-25T14:09:00Z") }
+]
+
+
+Q3]Query:db.sales.find({
+    $or: [
+        { price: { $lt: 10 } },  // Price less than 10
+        { price: { $gt: 20 } }   // Price greater than 20
+    ]
+})
+Example Output:[
+    { "_id" : 1, "item" : "Americanos", "price" : 5, "size": "Short", "quantity" : 22, "date" : ISODate("2022-01-15T08:00:00Z") },
+    { "_id" : 2, "item" : "Cappuccino", "price" : 6, "size": "Short", "quantity" : 12, "date" : ISODate("2022-01-16T09:00:00Z") },
+    { "_id" : 6, "item" : "Cappuccino", "price" : 7, "size": "Tall", "quantity" : 20, "date" : ISODate("2022-02-20T10:07:00Z") },
+    { "_id" : 10, "item" : "Americanos", "price" : 8, "size": "Tall", "quantity" : 15, "date" : ISODate("2022-02-25T14:09:00Z") },
+    { "_id" : 4, "item" : "Mochas", "price" : 25, "size": "Tall", "quantity" : 11, "date" : ISODate("2022-02-17T08:00:00Z") },
+    { "_id" : 7, "item" : "Lattes", "price" : 25, "size": "Tall", "quantity" : 30, "date" : ISODate("2022-02-21T10:08:00Z") }
+]
+
+
+Q4]Query:db.sales.find({ quantity: { $exists: true } })
+Example Output:[
+    { "_id" : 1, "item" : "Americanos", "price" : 5, "size": "Short", "quantity" : 22, "date" : ISODate("2022-01-15T08:00:00Z") },
+    { "_id" : 2, "item" : "Cappuccino", "price" : 6, "size": "Short", "quantity" : 12, "date" : ISODate("2022-01-16T09:00:00Z") },
+    { "_id" : 3, "item" : "Lattes", "price" : 15, "size": "Grande", "quantity" : 25, "date" : ISODate("2022-01-16T09:05:00Z") },
+    { "_id" : 4, "item" : "Mochas", "price" : 25, "size": "Tall", "quantity" : 11, "date" : ISODate("2022-02-17T08:00:00Z") },
+    { "_id" : 5, "item" : "Americanos", "price" : 10, "size": "Grande", "quantity" : 12, "date" : ISODate("2022-02-18T21:06:00Z") },
+    { "_id" : 6, "item" : "Cappuccino", "price" : 7, "size": "Tall", "quantity" : 20, "date" : ISODate("2022-02-20T10:07:00Z") },
+    { "_id" : 7, "item" : "Lattes", "price" : 25, "size": "Tall", "quantity" : 30, "date" : ISODate("2022-02-21T10:08:00Z") },
+    { "_id" : 8, "item" : "Americanos", "price" : 10, "size": "Grande", "quantity" : 21, "date" : ISODate("2022-02-22T14:09:00Z") },
+    { "_id" : 9, "item" : "Cappuccino", "price" : 10, "size": "Grande", "quantity" : 17, "date" : ISODate("2022-02-23T14:09:00Z") },
+    { "_id" : 10, "item" : "Americanos", "price" : 8, "size": "Tall", "quantity" : 15, "date" : ISODate("2022-02-25T14:09:00Z") }
+]
+
+
+Q5]db.sales.insertMany([
+    { "_id": 11, "item": "Espresso", "price": 12, "color": ["black", "white"] },
+    { "_id": 12, "item": "Macchiato", "price": 18, "color": ["brown"] },
+    { "_id": 13, "item": "Mocha", "price": 20, "color": ["white", "brown"] }
+]);
+Using $in (Recommended):db.sales.find({ color: "white" })
+Using $elemMatch (Alternative):db.sales.find({ color: { $elemMatch: { $eq: "white" } } })
+
+Q6]Query:
+db.products.updateOne(
+    { name: "xTablet" },  // Find the document where name is "xTablet"
+    { $set: { "spec.ram": 24 } }  // Update the "ram" inside the "spec" field
+)
+After running this, you can verify the update with:
+db.products.find({ name: "xTablet" })
+
+Q7]Query:db.products.find({}, { _id: 0, spec: 1 })
+Sample Output:[
+    { "spec": { "ram": 4, "screen": 6.5, "cpu": 2.66 } },
+    { "spec": { "ram": 16, "screen": 9.5, "cpu": 3.66 } },
+    { "spec": { "ram": 12, "screen": 9.7, "cpu": 3.66 } },
+    { "spec": { "ram": 8, "screen": 9.7, "cpu": 1.66 } },
+    { "spec": { "ram": 4, "screen": 9.7, "cpu": 1.66 } }
+]
+
+Q8]Query:db.products.find().sort({ price: -1 })
+Example Output (Sorted by Price Descending):
+[
+    { "_id" : 2, "name" : "xTablet", "price" : 899, ... },
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, ... },
+    { "_id" : 1, "name" : "xPhone", "price" : 799, ... },
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, ... },
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599, ... }
+]
+
+Q9]Query:db.products.find().skip(1).limit(2)
+Example Output (Assuming Original Order):
+[
+    { "_id" : 2, "name" : "xTablet", "price" : 899, ... },
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, ... }
+]
+
+Q10]Query:
+db.products.find({ 
+    name: { $regex: /^S/, $options: "i" },  // Name starts with "S" (case-insensitive)
+    price: { $gt: 700 }  // Price greater than 700
+})
+Example Output (If Matching Documents Exist):
+[
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, ... }
+]
+
+Q11]Query:db.sales.aggregate([
+    {
+        $group: {
+            _id: null,  // Group all documents together
+            totalPrice: { $sum: "$price" }  // Sum the price of all items
+        }
+    }
+])
+Example Output:[
+    { "totalPrice": 120 }
+]
+
+Q12]Query:db.sales.find({}, { _id: 0, size: 1 })
+Example Output:
+[
+    { "size": "Short" },
+    { "size": "Short" },
+    { "size": "Grande" },
+    { "size": "Tall" },
+    { "size": "Grande" },
+    { "size": "Tall" },
+    { "size": "Tall" },
+    { "size": "Grande" },
+    { "size": "Grande" },
+    { "size": "Tall" }
+]
+If you also want to include the item name, use:db.sales.find({}, { _id: 0, item: 1, size: 1 })
+
+Q13]Query:db.sales.aggregate([
+    { $match: { size: "Tall" } },  // Filter items where size is "Tall"
+    { 
+        $group: { 
+            _id: "$item",  // Group by item name
+            totalQuantity: { $sum: "$quantity" }  // Sum up the total quantity for each item
+        }
+    }
+])
+Example Output:[
+    { "_id": "Mochas", "totalQuantity": 11 },
+    { "_id": "Cappuccino", "totalQuantity": 20 },
+    { "_id": "Lattes", "totalQuantity": 30 },
+    { "_id": "Americanos", "totalQuantity": 15 }
+]
