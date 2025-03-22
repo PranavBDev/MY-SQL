@@ -146,3 +146,32 @@ Example Output:[
     { "_id": "Lattes", "totalQuantity": 30 },
     { "_id": "Americanos", "totalQuantity": 15 }
 ]
+
+Q14]Query:
+db.sales.find().sort({ price: 1 }).skip(1).limit(1)
+Example Output:{
+    "_id": 2,
+    "item": "Cappuccino",
+    "price": 6,
+    "size": "Short",
+    "quantity": 12,
+    "date": ISODate("2022-01-16T09:00:00Z")
+}
+
+Q15]Query:
+db.sales.aggregate([
+    { 
+        $group: { 
+            _id: "$item",  // Group by item name
+            totalCount: { $sum: 1 },  // Count occurrences of each item
+            avgPrice: { $avg: "$price" }  // Calculate average price
+        }
+    }
+])
+Example Output:[
+    { "_id": "Americanos", "totalCount": 4, "avgPrice": 8.25 },
+    { "_id": "Cappuccino", "totalCount": 3, "avgPrice": 7.67 },
+    { "_id": "Lattes", "totalCount": 2, "avgPrice": 20.00 },
+    { "_id": "Mochas", "totalCount": 1, "avgPrice": 25.00 }
+]
+
